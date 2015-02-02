@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div class="container">
 <p>
   <strong>Heading:</strong>
   <%= @post.heading %>
@@ -30,5 +30,33 @@
   <%= @post.timestamp %>
 </p>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<p>
+  Bedrooms: <%= @post.bedrooms %>
+</p>
+
+<p>
+  Bathrooms: <%= @post.bathrooms %>
+</p>
+
+<p>
+  Square Footage <%= @post.sqft %>
+</p>
+
+<p>
+  Cats allowed: <%= @post.cats %>
+</p>
+
+<p>
+  Dogs allowed: <%= @post.dogs %>
+</p>
+
+<p>
+  Washer/dryer in unit <%= @post.w_d_in_unit %>
+</p>
+
+<p>
+  Street Parking  <%= @post.street_parking %>
+</p>
+  <%= link_to 'Edit', edit_post_path(@post) %> |
+  <%= link_to 'Back', posts_path %>
+</div>
