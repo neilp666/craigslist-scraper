@@ -29,7 +29,7 @@ uri.query = URI.encode_www_form(params)
 result = JSON.parse(open(uri).read)
 
 # Display results to screen
-#puts result["postings"].first["annotations"]["sqft"]
+#puts result["postings"].first["images"].first["full"]
 
 #puts JSON.pretty_generate result["postings"]
 
@@ -59,6 +59,14 @@ result = JSON.parse(open(uri).read)
 
 	# Save Post
 	@post.save
+
+  # loop over images and save to Image Database
+  posting["images"].each do |image|
+    @image = Image.new
+    @image.url = image["full"]
+    @image.post_id = @post.id
+    @image.save
+  end
 	end
  end
 
