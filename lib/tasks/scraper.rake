@@ -1,7 +1,7 @@
 namespace :scraper do
   desc "Fetch Craigslist posts from 3Taps"
   task scrape: :environment do
-  	require 'open-uri'
+  require 'open-uri'
 	require 'json'
 # Set API token and URL
 
@@ -75,4 +75,40 @@ result = JSON.parse(open(uri).read)
   	Post.destroy_all
   end
 
+  desc "Save neighborhood codes in a reference table"
+  task scrape_neighborhoods: :environment do
+    
+    require 'open-uri'
+  require 'json'
+# Set API token and URL
+
+auth_token = "fa9504f4383a477d56f4a23a1cc86e0d"
+location_url = "http://reference.3taps.com/locations"
+
+# Specify request parameters
+
+params = {
+  auth_token: auth_token,
+  level: "locality",
+  city: "USA-NYM-BRL"
+}
+
+# Prepare API request
+uri = URI.parse(location_url)
+uri.query = URI.encode_www_form(params)
+
+# Submit request
+result = JSON.parse(open(uri).read)
+
+# Display results to screen
+puts JSON.pretty_generate result
+
+# Store results in database
+result["locations"].each do |location|
+  @location = Location.new
+  @location.code = location["code"]
+  @location.name = location["short_name"]
+  @location.save
+end
+  end
 end
