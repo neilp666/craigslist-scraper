@@ -8,11 +8,15 @@ namespace :scraper do
 auth_token = "fa9504f4383a477d56f4a23a1cc86e0d"
 polling_url = "http://polling.3taps.com/poll"
 
+
+# Grab data until up-to-date
+loop do
+
 # Specify request parameters
 
 params = {
 	auth_token: auth_token,
-	anchor: 1783768835,
+	anchor: Anchor.first.value,
 	source: "CRAIG",
 	category_group: "RRRR",
 	category: "RHFR",
@@ -70,10 +74,13 @@ result = JSON.parse(open(uri).read)
 	end
  end
 
+
   desc "Destroy all posting data"
   task destroy_all_posts: :environment do
-  	Post.destroy_all
+    Post.destroy_all
   end
+
+
 
   desc "Save neighborhood codes in a reference table"
   task scrape_neighborhoods: :environment do
@@ -111,4 +118,9 @@ result["locations"].each do |location|
   @location.save
 end
   end
+
+  Anchor.first.update(value: results["anchor"])
+  puts Anchor.first.value
+  break if result["posting"].empty?
+end
 end

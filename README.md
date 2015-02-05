@@ -12,3 +12,5 @@ Craigslist Scraper v1
 
 * Postgres
 
+* Will Paginate
+
