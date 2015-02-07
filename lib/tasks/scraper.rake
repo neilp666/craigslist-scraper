@@ -39,11 +39,7 @@ result = JSON.parse(open(uri).read)
 
 
 # Store results in database
-#result["postings"].each do |posting|
-
-	# Create new Post
-
-	result["postings"].each do |posting|
+result["postings"].each do |posting|
 
   # Create new Post
   @post = Post.new
@@ -71,8 +67,13 @@ result = JSON.parse(open(uri).read)
     @image.post_id = @post.id
     @image.save
   end
-	end
  end
+
+ Anchor.first.update(value: result["anchor"])
+  puts Anchor.first.value
+  break if result["postings"].empty?
+end
+end
 
 
   desc "Destroy all posting data"
@@ -85,7 +86,7 @@ result = JSON.parse(open(uri).read)
   desc "Save neighborhood codes in a reference table"
   task scrape_neighborhoods: :environment do
     
-    require 'open-uri'
+  require 'open-uri'
   require 'json'
 # Set API token and URL
 
@@ -108,7 +109,7 @@ uri.query = URI.encode_www_form(params)
 result = JSON.parse(open(uri).read)
 
 # Display results to screen
-puts JSON.pretty_generate result
+# puts JSON.pretty_generate result
 
 # Store results in database
 result["locations"].each do |location|
@@ -117,10 +118,7 @@ result["locations"].each do |location|
   @location.name = location["short_name"]
   @location.save
 end
-  end
+end
+end
 
-  Anchor.first.update(value: results["anchor"])
-  puts Anchor.first.value
-  break if result["posting"].empty?
-end
-end
+ 
